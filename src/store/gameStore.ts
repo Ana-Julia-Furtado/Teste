@@ -44,6 +44,7 @@ interface GameStore {
   joinRoom: (roomId: string) => void
   leaveRoom: () => void
   startGame: () => void
+  restartGame: () => void
   submitAnswer: (answerIndex: number, timeSpent: number) => void
   nextQuestion: () => void
   endGame: () => void
@@ -371,6 +372,56 @@ export const useGameStore = create<GameStore>()(
             playerAnswers: [],
             availableRooms: updatedRooms,
             error: null,
+            currentGameSession: {
+              startTime: new Date(),
+              questionsAnswered: 0,
+              correctAnswers: 0,
+              totalScore: 0,
+            },
+          })
+
+          // Save to localStorage and notify other tabs
+          saveRoomsToStorage(updatedRooms)
+        },
+
+        restartGame: () => {
+          const { currentRoom, gameSettings, availableRooms } = get()
+          if (!currentRoom) return
+
+          // Get new filtered and prepared questions for the entire game
+          const gameQuestions = getFilteredQuestions(gameSettings)
+
+          // Ensure we have at least one question
+          if (gameQuestions.length === 0) {
+            set({ error: "Não foi possível encontrar perguntas para as configurações selecionadas." })
+            return
+          }
+
+          // Reset scores for all players in the room
+          const resetScores: { [key: string]: number } = {}
+          currentRoom.players.forEach((player) => {
+            resetScores[player.id] = 0
+          })
+
+          const updatedRoom = {
+            ...currentRoom,
+            gameState: "playing" as GameState,
+            questionIndex: 0,
+            timeRemaining: gameSettings.timePerQuestion,
+            scores: resetScores,
+          }
+
+          const updatedRooms = availableRooms.map((r) => (r.id === currentRoom.id ? updatedRoom : r))
+
+          // Reset all game state and initialize with the first question
+          set({
+            currentRoom: updatedRoom,
+            currentGameQuestions: gameQuestions,
+            currentQuestion: gameQuestions[0],
+            playerAnswers: [],
+            availableRooms: updatedRooms,
+            error: null,
+            showResults: false,
             currentGameSession: {
               startTime: new Date(),
               questionsAnswered: 0,

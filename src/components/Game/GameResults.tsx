@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
 export const GameResults: React.FC = () => {
-  const { currentRoom, currentUser, leaveRoom } = useGameStore();
+  const { currentRoom, currentUser, leaveRoom, startGame } = useGameStore();
   const navigate = useNavigate();
 
   if (!currentRoom || !currentUser) return null;
@@ -124,7 +124,7 @@ export const GameResults: React.FC = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             
             <button
-              onClick={() => window.location.reload()}
+              onClick={startGame}
               className="flex items-center justify-center space-x-2 px-6 py-3 bg-gradient-nature text-white rounded-lg hover:shadow-lg transform hover:scale-105 transition-all"
             >
               <RotateCcw className="h-5 w-5" />

@@ -93,7 +93,7 @@ class AppTheme {
     ),
 
     // Card theme with subtle elevation
-    cardTheme: CardTheme(
+    cardTheme: const CardThemeData(
       color: surfaceLight,
       elevation: 2,
       shadowColor: shadowLight,
@@ -279,7 +279,7 @@ class AppTheme {
       trackHeight: 4,
     ),
 
-    tabBarTheme: TabBarTheme(
+    tabBarTheme: const TabBarThemeData(
       labelColor: primaryLight,
       unselectedLabelColor: textSecondaryLight,
       indicatorColor: primaryLight,
@@ -373,7 +373,7 @@ class AppTheme {
       iconTheme: IconThemeData(color: textPrimaryDark),
       actionsIconTheme: IconThemeData(color: textPrimaryDark),
     ),
-    cardTheme: CardTheme(
+    cardTheme: const CardThemeData(
       color: surfaceDark,
       elevation: 2,
       shadowColor: shadowDark,
@@ -540,7 +540,7 @@ class AppTheme {
       inactiveTrackColor: primaryDark.withAlpha(77),
       trackHeight: 4,
     ),
-    tabBarTheme: TabBarTheme(
+    tabBarTheme: const TabBarThemeData(
       labelColor: primaryDark,
       unselectedLabelColor: textSecondaryDark,
       indicatorColor: primaryDark,
